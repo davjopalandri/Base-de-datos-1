@@ -1,6 +1,6 @@
--- CREATE DATABASE SpeedyGonzalesSRL
+CREATE DATABASE SpeedyGonzalesSRL;
 
-USE SpeedyGonzalesSRL
+USE SpeedyGonzalesSRL;
 
 
 CREATE TABLE dbo.Provincia (
@@ -36,7 +36,7 @@ CREATE TABLE dbo.Camiones(
 
 CREATE TABLE dbo.Clientes(
 	ID_Cliente int NOT NULL IDENTITY(1, 1) PRIMARY KEY,
-	Codigo_de_cliente varchar(50)  NOT NULL,
+	Codigo_de_viaje AS ('CLI' + RIGHT('000' + CAST(ID_Cliente AS VARCHAR(3)), 4)) PERSISTED,
 	Nombre varchar(50),
 	Apellido varchar(50),
 	DNI int,
@@ -68,13 +68,13 @@ CREATE TABLE dbo.Chofer(
 
 CREATE TABLE dbo.Viaje_Envio(
 	ID_Viaje_Envio int NOT NULL IDENTITY(1, 1) PRIMARY KEY,
-	Codigo_de_viaje varchar(50) NOT NULL,
+	Codigo_de_viaje AS ('VIAJE' + RIGHT('000' + CAST(ID_Viaje_Envio AS VARCHAR(3)), 4)) PERSISTED,
 	ID_Cliente int NOT NULL,
 	ID_Chofer int NOT NULL,
-	ID_Provincia_Origen int NOT NULL,
+	--ID_Provincia_Origen int NOT NULL,
 	ID_Ciudad_Origen int NOT NULL,
 	Dirección_Origen varchar(50),
-	ID_Provincia_Destino int NOT NULL,
+	--ID_Provincia_Destino int NOT NULL,
 	ID_Ciudad_Destino int NOT NULL,
 	Dirección_Destino varchar(50),
 	Cantidad_de_km_recorridos REAL NOT NULL,
@@ -84,9 +84,9 @@ CREATE TABLE dbo.Viaje_Envio(
 	Fecha_Llegada_Real DATE NOT NULL,
  FOREIGN KEY (ID_Cliente) REFERENCES dbo.Clientes (ID_Cliente),
  FOREIGN KEY (ID_Chofer) REFERENCES dbo.Chofer (ID_Chofer),
- FOREIGN KEY (ID_Provincia_Origen) REFERENCES dbo.Provincia (ID_Provincia),
+ --FOREIGN KEY (ID_Provincia_Origen) REFERENCES dbo.Provincia (ID_Provincia),
  FOREIGN KEY (ID_Ciudad_Origen) REFERENCES dbo.Ciudad (ID_Ciudad),
- FOREIGN KEY (ID_Provincia_Destino) REFERENCES dbo.Provincia (ID_Provincia),
+ --FOREIGN KEY (ID_Provincia_Destino) REFERENCES dbo.Provincia (ID_Provincia),
  FOREIGN KEY (ID_Ciudad_Destino) REFERENCES dbo.Ciudad (ID_Ciudad),
 );
 
@@ -151,16 +151,16 @@ VALUES
 
 
 /* Inserto 20 Clientes entre personas y empresas*/
-INSERT INTO dbo.Clientes (Codigo_de_cliente, Nombre, Apellido, DNI, Razon_Social, CUIT, Telefono, Email, ID_Ciudad, Domicilio)
+INSERT INTO dbo.Clientes (Nombre, Apellido, DNI, Razon_Social, CUIT, Telefono, Email, ID_Ciudad, Domicilio)
 VALUES
-    ('CLI001', 'Juan', 'Pérez', 12345678, NULL, NULL, '555-123-456', 'juan@email.com', 1, 'Dirección1'),
-    ('CLI002', 'Ana', 'López', 87654321, NULL, NULL, '555-987-654', 'ana@email.com', 2, 'Dirección2'),
-    ('CLI003', 'Carlos', 'Gómez', 98765432, NULL, NULL, '555-345-678', 'carlos@email.com', 3, 'Dirección3');
+    ('Juan', 'Pérez', 12345678, NULL, NULL, '555-123-456', 'juan@email.com', 1, 'Dirección1'),
+    ('Ana', 'López', 87654321, NULL, NULL, '555-987-654', 'ana@email.com', 2, 'Dirección2'),
+    ('Carlos', 'Gómez', 98765432, NULL, NULL, '555-345-678', 'carlos@email.com', 3, 'Dirección3');
 
 
 /* INSERTO 18 VIAJES */
-INSERT INTO dbo.Viaje_Envio (Codigo_de_viaje, ID_Cliente, ID_Chofer, ID_Ciudad_Origen, Dirección_Origen, ID_Ciudad_Destino, Dirección_Destino, Cantidad_de_km_recorridos, Fecha_Salida_Estimada, Fecha_Salida_Real, Fecha_Llegada_Estimada, Fecha_Llegada_Real)
+INSERT INTO dbo.Viaje_Envio (ID_Cliente, ID_Chofer, ID_Ciudad_Origen, Dirección_Origen, ID_Ciudad_Destino, Dirección_Destino, Cantidad_de_km_recorridos, Fecha_Salida_Estimada, Fecha_Salida_Real, Fecha_Llegada_Estimada, Fecha_Llegada_Real)
 VALUES
-    ('VIAJE001', 1, 1, 1, 'Dirección Origen 1', 2, 'Dirección Destino 1', 500.5, '2023-10-31', '2023-10-31', '2023-11-05', '2023-11-05'),
-    ('VIAJE002', 2, 2, 3, 'Dirección Origen 2', 4, 'Dirección Destino 2', 600.0, '2023-11-01', '2023-04-01', '2023-11-06', '2023-11-06'),
-    ('VIAJE003', 3, 3, 5, 'Dirección Origen 3', 6, 'Dirección Destino 3', 700.2, '2023-11-02', '2023-11-02', '2023-11-07', '2023-11-07');
+    (1, 1, 1, 'Dirección Origen 1', 2, 'Dirección Destino 1', 500.5, '2023-10-31', '2023-10-31', '2023-11-05', '2023-11-05'),
+    (2, 2, 3, 'Dirección Origen 2', 4, 'Dirección Destino 2', 600.0, '2023-11-01', '2023-04-01', '2023-11-06', '2023-11-06'),
+    (3, 2, 5, 'Dirección Origen 3', 6, 'Dirección Destino 3', 700.2, '2023-11-02', '2023-11-02', '2023-11-07', '2023-11-07');
