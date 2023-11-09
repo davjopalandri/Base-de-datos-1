@@ -10,6 +10,7 @@ CREATE TABLE Provincia
 	Nombre varchar(50)
 );
 
+
 CREATE TABLE Ciudad
 (
 	ID_Ciudad int NOT NULL IDENTITY PRIMARY KEY,
@@ -18,17 +19,20 @@ CREATE TABLE Ciudad
 	FOREIGN KEY (ID_Provincia) REFERENCES Provincia (ID_Provincia)
 );
 
+
 CREATE TABLE Remolque
 (
 	ID_Remolque tinyint NOT NULL IDENTITY PRIMARY KEY,
 	Tipo_de_remolque varchar(50) NOT NULL,
 );
 
+
 CREATE TABLE Marca
 (
 	ID_Marca int NOT NULL IDENTITY PRIMARY KEY,
 	Nombre_Marca varchar(50),
 );
+
 
 CREATE TABLE Modelo
 (
@@ -37,6 +41,7 @@ CREATE TABLE Modelo
 	ID_Marca int NOT NULL,
 	FOREIGN KEY (ID_Marca) REFERENCES Marca (ID_Marca)
 );
+
 
 CREATE TABLE Camion
 (
@@ -48,6 +53,7 @@ CREATE TABLE Camion
 	FOREIGN KEY (ID_Remolque) REFERENCES Remolque (ID_Remolque),
 	FOREIGN KEY (ID_Modelo) REFERENCES Modelo (ID_Modelo)
 );
+
 
 CREATE TABLE Cliente
 (
@@ -65,6 +71,7 @@ CREATE TABLE Cliente
 	FOREIGN KEY (ID_Ciudad) REFERENCES Ciudad (ID_Ciudad),
 );
 
+
 CREATE TABLE Chofer
 (
 	ID_Chofer int NOT NULL IDENTITY PRIMARY KEY,
@@ -80,6 +87,7 @@ CREATE TABLE Chofer
 	Codigo_de_registro varchar(50),
 	FOREIGN KEY (ID_Camion) REFERENCES Camion (ID_Camion),
 );
+
 
 CREATE TABLE Viaje_Envio
 (
@@ -112,12 +120,14 @@ VALUES
 	('Remolque de Lowboy'),
 	('Remolque de tolva');
 
+
 INSERT INTO Marca
 	(Nombre_Marca)
 VALUES
 	('Scania'),
 	('Mercedez Benz'),
 	('Volkswagen');
+
 
 INSERT INTO Modelo
 	(Nombre_Modelo, ID_Marca)
@@ -293,13 +303,14 @@ VALUES
 	(20, 2, 2, '8473 Hollow Ridge Circle', 21, '70468 Forest Run Road', 150, '2023-07-01', '2023-07-01', '2023-07-03', '2023-07-03'),
 	(8, 6, 2, '906 Nova Parkway', 1, '7123 Morrow Hill', 300, '2023-08-10', '2023-08-10', '2023-08-12', '2023-08-12');
 
--- ////////////////////////////////////////////////////////////////////////
+
 ---  ¿Cuántos viajes se realizaron hacia la provincia de Santa Fe? ---
 SELECT COUNT(*) AS Viajes_a_Provincia_StFe
 FROM Viaje_Envio v
 	left join Ciudad c ON v.ID_Ciudad_Destino = c.ID_Ciudad
 	left join Provincia p ON c.ID_Provincia = p.ID_Provincia
 WHERE P.Nombre = 'Santa Fe';
+
 
 --- Mostrar los datos que considere relevantes sobre los viajes realizados ---
 --- desde la provincia de Córdoba durante el primer semestre de 2023       ---
