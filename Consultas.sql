@@ -1,11 +1,8 @@
-select COUNT(*) AS Viajes_a_Provincia_StFe
-from Viaje_Envio v
-left join Ciudad c ON v.ID_Ciudad_Destino = c.ID_Ciudad
-left join Provincia p ON c.ID_Provincia = p.ID_Provincia
-WHERE P.Nombre = 'Santa Fe'; 
-
 select * 
 from Provincia
+
+select *
+from Remolque
 
 select *
 from Camion
@@ -27,6 +24,13 @@ from Clientes
 
 select *
 from Viaje_Envio
+
+--- Primera Query ---
+select COUNT(*) AS Viajes_a_Provincia_StFe
+from Viaje_Envio v
+left join Ciudad c ON v.ID_Ciudad_Destino = c.ID_Ciudad
+left join Provincia p ON c.ID_Provincia = p.ID_Provincia
+WHERE P.Nombre = 'Santa Fe'; 
 
 --- Segunda Query---
 SELECT
