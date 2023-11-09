@@ -22,27 +22,26 @@ CREATE TABLE Remolque (
 	Tipo_de_remolque varchar(50) NOT NULL,
 );
 
-CREATE TABLE dbo.Marcas(
+CREATE TABLE Marca (
 	ID_Marca int NOT NULL IDENTITY PRIMARY KEY,
 	Nombre_Marca varchar(50),
 );
 
-CREATE TABLE dbo.Modelos(
-	ID_Modelos int NOT NULL IDENTITY PRIMARY KEY,
-	Nombre_Modelos varchar(50),
+CREATE TABLE Modelo (
+	ID_Modelo int NOT NULL IDENTITY PRIMARY KEY,
+	Nombre_Modelo varchar(50),
 	ID_Marca int NOT NULL,
-	FOREIGN KEY (ID_Marca) REFERENCES Marcas (ID_Marca)
+	FOREIGN KEY (ID_Marca) REFERENCES Marca (ID_Marca)
 );
 
 CREATE TABLE Camion (
 	ID_Camion int NOT NULL IDENTITY PRIMARY KEY,
 	Patente varchar(30),
-	Marca varchar(40),
 	ID_Modelo int NOT NULL,
-	Anio YEAR,
+	Anio DATE,
 	ID_Remolque tinyint NOT NULL,
 	FOREIGN KEY (ID_Remolque) REFERENCES Remolque (ID_Remolque),
-	FOREIGN KEY (ID_Modelo) REFERENCES dbo.Modelos (ID_Modelos)
+	FOREIGN KEY (ID_Modelo) REFERENCES Modelo (ID_Modelo)
 );
 
 CREATE TABLE Cliente (
@@ -72,7 +71,7 @@ CREATE TABLE Chofer (
 	Edad tinyint,
 	Email varchar(50),
 	Codigo_de_registro varchar(50),
-  FOREIGN KEY (ID_Camion) REFERENCES Camiones (ID_Camion),
+  FOREIGN KEY (ID_Camion) REFERENCES Camion (ID_Camion),
 );
 
 CREATE TABLE Viaje_Envio(
@@ -95,46 +94,79 @@ CREATE TABLE Viaje_Envio(
 	FOREIGN KEY (ID_Ciudad_Destino) REFERENCES Ciudad (ID_Ciudad),
 );
 
-
 /* Inserto tres remolques */
-INSERT INTO dbo.Remolques (Tipo_de_remolque)
+INSERT INTO Remolque (Tipo_de_remolque)
 VALUES
 	('Remolque de enganche'),
 	('Remolque Eje central'),
-	('Remolque Semiremolque');
+	('Remolque Semiremolque'),
+	('Remolque de Lowboy'),
+	('Remolque de tolva');
 
-/* Inserto datos para 6 Camiones*/
-INSERT INTO dbo.Camiones (Patente, Marca, Modelo, Anio, ID_Remolque)
+INSERT INTO Marca (Nombre_Marca)
 VALUES
-    ('ABC123', 'Marca1', 2020, '2020-01-01', 1),
-    ('DEF456', 'Marca2', 2019, '2019-02-15', 2),
-    ('GHI789', 'Marca3', 2018, '2018-05-10', 3);
+	('Scania'),
+	('Mercedez Benz'),
+	('Volkswagen');
 
-
-/* Inserto datos para 10 choferes */
-INSERT INTO dbo.Chofer (ID_Camion, Nombre, Apellido, Razon_Social, DNI, CUIT, Domicilio, Telefono, Email)
+INSERT INTO Modelo (Nombre_Modelo, ID_Marca)
 VALUES
-    (1, 'Juan', 'P�rez', 'Transportes P�rez SRL', 12345678, '20-12345678-4', 'Direcci�n1', '555-123-456', 'juan@email.com'),
-    (2, 'Ana', 'L�pez', 'Transportes L�pez SA', 87654321, '27-87654321-8', 'Direcci�n2', '555-987-654', 'ana@email.com');
+	('Serie P', 1),
+	('Serie G', 1),
+	('Serie R', 1),
+	('Serie S', 1),
+	('V8', 1),
+	('Actros', 2),
+	('Axor', 2),
+	('Atego', 2),
+	('Accelo', 2),
+	('Constellation', 3),
+	('e-Delivery', 3),
+	('Delivery', 3),
+	('Meteor', 3);
 
+-- /* Inserto datos para 6 Camiones*/
+INSERT INTO Camion (Patente, ID_Modelo, Anio, ID_Remolque)
+VALUES
+     ('ABC123AF', 1, '2020-01-01', 1),
+     ('DEF456GH', 2, '2019-02-15', 2),
+     ('GHI789OY', 3, '2018-05-10', 3),
+     ('FGS456ER', 4, '2018-05-10', 5),
+     ('LAJ248KO', 5, '2018-05-10', 3),
+     ('KWI671PO', 6, '2018-05-10', 4);
 
+SELECT * FROM Camion;
 
+-- /* Inserto datos para 10 choferes */
+ INSERT INTO Chofer (ID_Camion, Nombre,         Apellido,    DNI, 					Domicilio,     Telefono_fijo, Telefono_celular, Edad, Email,                       Codigo_de_registro)
+ VALUES  						(1,         'Juan',					'Perez',     34-079-0328, 	'5th Floor', 	  815-452-3896, 555-123-456, 			59,		'juan@email.com',              8543761845),
+ 										(2,         'Rodolph',			'Chaffyn', 	 34-079-0400,		'PO Box 68159', 815-921-6973, 430-329-1123,			56,		'rchaffyn0@noaa.gov',          6989374160),
+ 										(3,         'Steffi',				'Carlton',   79-558-5230,		'10th Floor',		200-452-1786,	788-430-3491,			36,	  'scarlton1@shinystat.com',     4927990532),
+ 										(4,         'Milo',				  'Pescud',    34-079-0327,		'12th Floor',		386-893-3896,	344-799-7694,			28,		'mpescud2@va.gov',					   7875274745),
+ 										(5,         'Kimble',				'McGrae',		 75-038-5343,		'7th Floor',		537-480-0415,	525-861-3238,			45,		'kmcgrae3@redcross.org',		   9412738927),
+ 										(6,         'Sherlocke',		'Handley',	 51-192-5925,		'Apt 1053',		 	464-196-0839,	645-529-2299,			35,		'shandley4@aboutads.info',	   0707260108),
+ 										(1,         'Erda',				  'Cuttings',	 73-778-0160,		'Room 1675',		303-736-8632,	712-842-8090,			45,		'ecuttings5@slashdot.org',	   1937396282),
+ 										(2,         'Daile',				'Kach', 		 62-999-1511,		'Room 701',			134-101-0075,	823-843-0920,			26,		'dkach6@histats.com',			     1569259682),
+ 										(3,         'Rafael',				'Gaither', 	 90-617-6109,		'Suite 89',			846-637-8237,	878-904-0751,			21,		'rgaither7@china.com',		   8798386018),
+ 										(4,         'Devlen',				'Incogna', 	 20-957-1596,		'Suite 36',			935-657-4314,	704-160-4014,		  65,	  'dincogna8@washingtonpost.com',9923570363);
+
+-- /* Inserto datos para 10 choferes */
 INSERT INTO Provincia (Nombre)
 VALUES ('Buenos Aires'),
 ('Catamarca'),
 ('Chaco'),
 ('Chubut'),
-('C�rdoba'),
+('Cordoba'),
 ('Corrientes'),
-('Entre R�os'),
+('Entre Rios'),
 ('Formosa'),
 ('Jujuy'),
 ('La Pampa'),
 ('La Rioja'),
 ('Mendoza'),
 ('Misiones'),
-('Neuqu�n'),
-('R�o Negro'),
+('Neuquen'),
+('Rio Negro'),
 ('Salta'),
 ('San Juan'),
 ('San Luis'),
@@ -142,30 +174,30 @@ VALUES ('Buenos Aires'),
 ('Santa Fe'),
 ('Santiago del Estero'),
 ('Tierra del Fuego'),
-('Tucum�n');
+('Tucuman');
 
-/* Inserto 50 ciudades de Argentina con su ID_provincia*/
-INSERT INTO dbo.Ciudad (ID_Provincia, Nombre)
-VALUES
-    (1, 'Buenos Aires'),
-    (1, 'La Plata'),
-    (5, 'C�rdoba'),
-    (5, 'Villa Mar�a'),
-    (20, 'Rosario'),
-    (20, 'Santa Fe');
-
-
-/* Inserto 20 Clientes entre personas y empresas*/
-INSERT INTO dbo.Clientes (Nombre, Apellido, DNI, Razon_Social, CUIT, Telefono, Email, ID_Ciudad, Domicilio)
-VALUES
-    ('Juan', 'P�rez', 12345678, NULL, NULL, '555-123-456', 'juan@email.com', 1, 'Direcci�n1'),
-    ('Ana', 'L�pez', 87654321, NULL, NULL, '555-987-654', 'ana@email.com', 2, 'Direcci�n2'),
-    ('Carlos', 'G�mez', 98765432, NULL, NULL, '555-345-678', 'carlos@email.com', 3, 'Direcci�n3');
+-- /* Inserto 50 ciudades de Argentina con su ID_provincia*/
+-- INSERT INTO dbo.Ciudad (ID_Provincia, Nombre)
+-- VALUES
+--     (1, 'Buenos Aires'),
+--     (1, 'La Plata'),
+--     (5, 'C�rdoba'),
+--     (5, 'Villa Mar�a'),
+--     (20, 'Rosario'),
+--     (20, 'Santa Fe');
 
 
-/* INSERTO 18 VIAJES */
-INSERT INTO dbo.Viaje_Envio (ID_Cliente, ID_Chofer, ID_Ciudad_Origen, Direcci�n_Origen, ID_Ciudad_Destino, Direcci�n_Destino, Cantidad_de_km_recorridos, Fecha_Salida_Estimada, Fecha_Salida_Real, Fecha_Llegada_Estimada, Fecha_Llegada_Real)
-VALUES
-    (1, 1, 1, 'Direcci�n Origen 1', 2, 'Direcci�n Destino 1', 500.5, '2023-10-31', '2023-10-31', '2023-11-05', '2023-11-05'),
-    (2, 2, 3, 'Direcci�n Origen 2', 4, 'Direcci�n Destino 2', 600.0, '2023-11-01', '2023-04-01', '2023-11-06', '2023-11-06'),
-    (3, 2, 5, 'Direcci�n Origen 3', 6, 'Direcci�n Destino 3', 700.2, '2023-11-02', '2023-11-02', '2023-11-07', '2023-11-07');
+-- /* Inserto 20 Clientes entre personas y empresas*/
+-- INSERT INTO dbo.Clientes (Nombre, Apellido, DNI, Razon_Social, CUIT, Telefono, Email, ID_Ciudad, Domicilio)
+-- VALUES
+--     ('Juan', 'P�rez', 12345678, NULL, NULL, '555-123-456', 'juan@email.com', 1, 'Direcci�n1'),
+--     ('Ana', 'L�pez', 87654321, NULL, NULL, '555-987-654', 'ana@email.com', 2, 'Direcci�n2'),
+--     ('Carlos', 'G�mez', 98765432, NULL, NULL, '555-345-678', 'carlos@email.com', 3, 'Direcci�n3');
+
+
+-- /* INSERTO 18 VIAJES */
+-- INSERT INTO dbo.Viaje_Envio (ID_Cliente, ID_Chofer, ID_Ciudad_Origen, Direcci�n_Origen, ID_Ciudad_Destino, Direcci�n_Destino, Cantidad_de_km_recorridos, Fecha_Salida_Estimada, Fecha_Salida_Real, Fecha_Llegada_Estimada, Fecha_Llegada_Real)
+-- VALUES
+--     (1, 1, 1, 'Direcci�n Origen 1', 2, 'Direcci�n Destino 1', 500.5, '2023-10-31', '2023-10-31', '2023-11-05', '2023-11-05'),
+--     (2, 2, 3, 'Direcci�n Origen 2', 4, 'Direcci�n Destino 2', 600.0, '2023-11-01', '2023-04-01', '2023-11-06', '2023-11-06'),
+--     (3, 2, 5, 'Direcci�n Origen 3', 6, 'Direcci�n Destino 3', 700.2, '2023-11-02', '2023-11-02', '2023-11-07', '2023-11-07');
