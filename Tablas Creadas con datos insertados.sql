@@ -229,8 +229,12 @@ VALUES
 	(20, 'Reconquista'),
 	(4, 'Comodoro Rivadavia');
 
+Select *
+from Ciudad
+
 -- /* Inserto 20 Clientes entre personas y empresas*/
-INSERT INTO Cliente	(Nombre, Apellido, Razon_Social, DNI, CUIT, Domicilio, Telefono, Email, ID_Ciudad)
+INSERT INTO Cliente
+	(Nombre, Apellido, Razon_Social, DNI, CUIT, Domicilio, Telefono, Email, ID_Ciudad)
 VALUES
 	('Etta'     		, 'Reuble'			, NUll, 190023344, NULL, 'Apt 1233'		, 3985574263	, 'ereuble0@facebook.com', 1),
 	('Giulietta'		, 'Gerram'			, NUll, 111699581, NULL, 'PO Box 63165', 7318883387	, 'ggerram1@goo.gl', 2),
@@ -241,7 +245,19 @@ VALUES
 	('Marthena'				, 'Gritland'			, NUll, 950608256, NULL, '14th Floor', 8044442078	, 'mgritland6@usgs.gov', 7),
 	('Lavinie'				, 'Roseaman'			, NUll, 394166700, NULL, 'Room 975'	, 4871835683, 'lroseaman7@cbsnews.com', 8),
 	('Gris'						, 'Hensmans'			, NUll, 823888864, NULL, '8th Floor'	, 3193723050, 'ghensmans8@kickstarter.com', 9),
-	('Gizela'					, 'O Sullivan', NUll, 940550029, NULL, 'Apt 721'			, 8194665039, 'gosullivan9@google.de', 10);
+	('Gizela'					, 'O Sullivan', NUll, 940550029, NULL, 'Apt 721'			, 8194665039, 'gosullivan9@google.de', 10),
+	(NUll, NUll, 'Avaveo', NUll, 602427830, '9 Bobwhite Circle', 2196699443, 'fmcdyer0@ftc.gov', 11),
+	(NUll, NUll, 'Eabox', NUll, 492140263, '10 Pond Pass', 4883203472, 'mslewcock1@ocn.ne.jp', 12),
+	(NUll, NUll, 'Topdrive', NUll, 618902888, '038 Gina Way', 7044698909, 'seakins2@admin.ch', 13),
+	(NUll, NUll, 'Viva', NUll, 723321142, '2177 Transport Road', 5827098763, 'adonnel3@state.tx.us', 14),
+	(NUll, NUll, 'Rhynoodle', NUll, 584258449, '8423 Oneill Way', 5146233277, 'ecabedo4@addthis.com', 15),
+	(NUll, NUll, 'InnoZ', NUll, 905597562, '934 Mosinee Hill', 5976305487, 'kmorrel5@discuz.net', 17),
+	(NUll, NUll, 'Talane', NUll, 888988563, '9 Welch Court', 3166655467, 'klembke6@amazon.com', 16),
+	(NUll, NUll, 'Realblab', NUll, 331915737, '4539 Dakota Hill', 1854479430, 'kmatzen7@squarespace.com', 18),
+	(NUll, NUll, 'Bubbletube', NUll, 042995274, '2429 Rutledge Avenue', 6582318558, 'rcasoni8@princeton.edu', 19),
+	(NUll, NUll, 'Tagopia', NUll, 821447700, '968 Thompson Place', 8837189366, 'loakly9@google.ru', 20);
+
+
 
 -- /* INSERTO 18 VIAJES */
 -- INSERT INTO dbo.Viaje_Envio (ID_Cliente, ID_Chofer, ID_Ciudad_Origen, Direcci�n_Origen, ID_Ciudad_Destino, Direcci�n_Destino, Cantidad_de_km_recorridos, Fecha_Salida_Estimada, Fecha_Salida_Real, Fecha_Llegada_Estimada, Fecha_Llegada_Real)
