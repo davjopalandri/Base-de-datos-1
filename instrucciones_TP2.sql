@@ -310,13 +310,12 @@ VALUES
 
 -- Creación de índices
 CREATE NONCLUSTERED INDEX idx_Fecha_Salida_Real 
-	ON Viaje_Envio(Fecha_Salida_Real ASC);
-CREATE INDEX idx_ID_Ciudad ON Ciudad(ID_Ciudad ASC) INCLUDE(Provincia);
-CREATE INDEX idx_ID_Cliente ON Viaje_Envio(ID_Cliente);
-CREATE NONCLUSTERED INDEX idx_ID_Chofer 
-	ON Chofer(ID_Chofer) INCLUDE(Apellido);
-CREATE INDEX idx_ID_Camion ON Camion(ID_Camion) INCLUDE(Patente);
-CREATE INDEX idx_ID_KM_recorridos ON Viaje_envio(Cantidad_de_km_recorridos);
+	ON Viaje_Envio(Fecha_Salida_Real ASC) INCLUDE(Fecha_Llegada_Real);
+--CREATE INDEX idx_ID_Ciudad ON Ciudad(ID_Ciudad ASC) INCLUDE(Provincia);
+CREATE NONCLUSTERED INDEX idx_ID_Cliente ON Viaje_Envio(ID_Cliente);
+CREATE NONCLUSTERED INDEX idx_ID_Chofer ON Viaje_Envio(ID_Chofer);
+CREATE NONCLUSTERED INDEX idx_ID_Camion ON Viaje_Envio(ID_Camion);
+CREATE NONCLUSTERED INDEX idx_ID_KM_recorridos ON Viaje_envio(Cantidad_de_km_recorridos);
 
 -- Actualizar estadísticas, analisis de eficiencia de Indices
 UPDATE STATISTICS Viaje_Envio;
