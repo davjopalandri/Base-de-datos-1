@@ -79,12 +79,14 @@ CREATE TABLE Chofer
 	Nombre varchar(50) NOT NULL,
 	Apellido varchar(50) NOT NULL,
 	DNI int NOT NULL,
+	ID_Ciudad int NOT NULL,
 	Domicilio varchar(50),
 	Telefono_fijo varchar(30),
 	Telefono_celular varchar(30),
 	Edad tinyint,
 	Email varchar(50),
 	Codigo_de_registro varchar(50)
+	FOREIGN KEY (ID_Ciudad) REFERENCES Ciudad (ID_Ciudad),
 	--FOREIGN KEY (ID_Camion) REFERENCES Camion (ID_Camion),
 );
 
@@ -162,18 +164,18 @@ VALUES
 
 
 INSERT INTO Chofer
-	(Nombre, Apellido, DNI, Domicilio, Telefono_fijo, Telefono_celular, Edad, Email, Codigo_de_registro)
+	(Nombre, Apellido, DNI, ID_Ciudad, Domicilio, Telefono_fijo, Telefono_celular, Edad, Email, Codigo_de_registro)
 VALUES
-	('Juan', 'Perez', 34-079-0328, '84 Village Green Court', 815-452-3896, 555-123-456, 59, 'juan@email.com', 8543761845),
-	('Rodolph', 'Chaffyn', 34-079-0400, '19289 Marquette Place', 815-921-6973, 430-329-1123, 56, 'rchaffyn0@noaa.gov', 6989374160),
-	('Steffi', 'Carlton', 79-558-5230, '9707 Summit Avenue', 200-452-1786, 788-430-3491, 36, 'scarlton1@shinystat.com', 4927990532),
-	('Milo', 'Pescud', 34-079-0327, '08981 Merry Crossing', 386-893-3896, 344-799-7694, 28, 'mpescud2@va.gov', 7875274745),
-	('Kimble', 'McGrae', 75-038-5343, '0001 Gulseth Terrace', 537-480-0415, 525-861-3238, 45, 'kmcgrae3@redcross.org', 9412738927),
-	('Sherlocke', 'Handley', 51-192-5925, '888 Commercial Terrace', 464-196-0839, 645-529-2299, 35, 'shandley4@aboutads.info', 0707260108),
-	('Erda', 'Cuttings', 73-778-0160, '6 Ludington Alley', 303-736-8632, 712-842-8090, 45, 'ecuttings5@slashdot.org', 1937396282),
-	('Daile', 'Kach', 62-999-1511, '51 Orin Alley', 134-101-0075, 823-843-0920, 26, 'dkach6@histats.com', 1569259682),
-	('Rafael', 'Gaither', 90-617-6109, '5 Harper Place', 846-637-8237, 878-904-0751, 21, 'rgaither7@china.com', 8798386018),
-	('Devlen', 'Incogna', 20-957-1596, '348 Russell Pass', 935-657-4314, 704-160-4014, 65, 'dincogna8@washingtonpost.com', 9923570363);
+	('Juan', 'Perez', 34-079-0328, 1, '84 Village Green Court', 815-452-3896, 555-123-456, 59, 'juan@email.com', 8543761845),
+	('Rodolph', 'Chaffyn', 34-079-0400, 2, '19289 Marquette Place', 815-921-6973, 430-329-1123, 56, 'rchaffyn0@noaa.gov', 6989374160),
+	('Steffi', 'Carlton', 79-558-5230, 3,'9707 Summit Avenue', 200-452-1786, 788-430-3491, 36, 'scarlton1@shinystat.com', 4927990532),
+	('Milo', 'Pescud', 34-079-0327, 4,'08981 Merry Crossing', 386-893-3896, 344-799-7694, 28, 'mpescud2@va.gov', 7875274745),
+	('Kimble', 'McGrae', 75-038-5343, 5,'0001 Gulseth Terrace', 537-480-0415, 525-861-3238, 45, 'kmcgrae3@redcross.org', 9412738927),
+	('Sherlocke', 'Handley', 51-192-5925, 6, '888 Commercial Terrace', 464-196-0839, 645-529-2299, 35, 'shandley4@aboutads.info', 0707260108),
+	('Erda', 'Cuttings', 73-778-0160, 12, '6 Ludington Alley', 303-736-8632, 712-842-8090, 45, 'ecuttings5@slashdot.org', 1937396282),
+	('Daile', 'Kach', 62-999-1511, 20,'51 Orin Alley', 134-101-0075, 823-843-0920, 26, 'dkach6@histats.com', 1569259682),
+	('Rafael', 'Gaither', 90-617-6109, 23, '5 Harper Place', 846-637-8237, 878-904-0751, 21, 'rgaither7@china.com', 8798386018),
+	('Devlen', 'Incogna', 20-957-1596, 22, '348 Russell Pass', 935-657-4314, 704-160-4014, 65, 'dincogna8@washingtonpost.com', 9923570363);
 
 
 INSERT INTO Provincia
