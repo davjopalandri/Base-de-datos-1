@@ -163,19 +163,6 @@ VALUES
 	('KWI671PO', 6, '2018-05-10', 4);
 
 
-INSERT INTO Chofer
-	(Nombre, Apellido, DNI, ID_Ciudad, Domicilio, Telefono_fijo, Telefono_celular, Edad, Email, Codigo_de_registro)
-VALUES
-	('Juan', 'Perez', 34-079-0328, 1, '84 Village Green Court', 815-452-3896, 555-123-456, 59, 'juan@email.com', 8543761845),
-	('Rodolph', 'Chaffyn', 34-079-0400, 2, '19289 Marquette Place', 815-921-6973, 430-329-1123, 56, 'rchaffyn0@noaa.gov', 6989374160),
-	('Steffi', 'Carlton', 79-558-5230, 3,'9707 Summit Avenue', 200-452-1786, 788-430-3491, 36, 'scarlton1@shinystat.com', 4927990532),
-	('Milo', 'Pescud', 34-079-0327, 4,'08981 Merry Crossing', 386-893-3896, 344-799-7694, 28, 'mpescud2@va.gov', 7875274745),
-	('Kimble', 'McGrae', 75-038-5343, 5,'0001 Gulseth Terrace', 537-480-0415, 525-861-3238, 45, 'kmcgrae3@redcross.org', 9412738927),
-	('Sherlocke', 'Handley', 51-192-5925, 6, '888 Commercial Terrace', 464-196-0839, 645-529-2299, 35, 'shandley4@aboutads.info', 0707260108),
-	('Erda', 'Cuttings', 73-778-0160, 12, '6 Ludington Alley', 303-736-8632, 712-842-8090, 45, 'ecuttings5@slashdot.org', 1937396282),
-	('Daile', 'Kach', 62-999-1511, 20,'51 Orin Alley', 134-101-0075, 823-843-0920, 26, 'dkach6@histats.com', 1569259682),
-	('Rafael', 'Gaither', 90-617-6109, 23, '5 Harper Place', 846-637-8237, 878-904-0751, 21, 'rgaither7@china.com', 8798386018),
-	('Devlen', 'Incogna', 20-957-1596, 22, '348 Russell Pass', 935-657-4314, 704-160-4014, 65, 'dincogna8@washingtonpost.com', 9923570363);
 
 
 INSERT INTO Provincia
@@ -240,6 +227,21 @@ VALUES
 	(20, 'Reconquista'),
 	(4, 'Comodoro Rivadavia');
 
+INSERT INTO Chofer
+	(Nombre, Apellido, DNI, ID_Ciudad, Domicilio, Telefono_fijo, Telefono_celular, Edad, Email, Codigo_de_registro)
+VALUES
+	('Juan', 'Perez', 34-079-0328, 1, '84 Village Green Court', 815-452-3896, 555-123-456, 59, 'juan@email.com', 8543761845),
+	('Rodolph', 'Chaffyn', 34-079-0400, 2, '19289 Marquette Place', 815-921-6973, 430-329-1123, 56, 'rchaffyn0@noaa.gov', 6989374160),
+	('Steffi', 'Carlton', 79-558-5230, 3,'9707 Summit Avenue', 200-452-1786, 788-430-3491, 36, 'scarlton1@shinystat.com', 4927990532),
+	('Milo', 'Pescud', 34-079-0327, 4,'08981 Merry Crossing', 386-893-3896, 344-799-7694, 28, 'mpescud2@va.gov', 7875274745),
+	('Kimble', 'McGrae', 75-038-5343, 5,'0001 Gulseth Terrace', 537-480-0415, 525-861-3238, 45, 'kmcgrae3@redcross.org', 9412738927),
+	('Sherlocke', 'Handley', 51-192-5925, 6, '888 Commercial Terrace', 464-196-0839, 645-529-2299, 35, 'shandley4@aboutads.info', 0707260108),
+	('Erda', 'Cuttings', 73-778-0160, 12, '6 Ludington Alley', 303-736-8632, 712-842-8090, 45, 'ecuttings5@slashdot.org', 1937396282),
+	('Daile', 'Kach', 62-999-1511, 20,'51 Orin Alley', 134-101-0075, 823-843-0920, 26, 'dkach6@histats.com', 1569259682),
+	('Rafael', 'Gaither', 90-617-6109, 23, '5 Harper Place', 846-637-8237, 878-904-0751, 21, 'rgaither7@china.com', 8798386018),
+	('Devlen', 'Incogna', 20-957-1596, 22, '348 Russell Pass', 935-657-4314, 704-160-4014, 65, 'dincogna8@washingtonpost.com', 9923570363);
+
+
 
 INSERT INTO Cliente
 	(Nombre, Apellido, Razon_Social, DNI, CUIT, Domicilio, Telefono, Email, ID_Ciudad)
@@ -269,7 +271,7 @@ VALUES
 INSERT INTO Viaje_Envio
 	(ID_Cliente, ID_Chofer, ID_Camion, ID_Ciudad_Origen, Dirección_Origen, ID_Ciudad_Destino, Dirección_Destino, Cantidad_de_km_recorridos, Fecha_Salida_Estimada, Fecha_Salida_Real, Fecha_Llegada_Estimada, Fecha_Llegada_Real)
 VALUES
-	(5, 9, 1, 18, '921 Coleman Center', 3, '98925 Cody Drive', 300, '2023-3-5', '2023-3-5', '2023-11-03', '2023-11-03'),
+	(5, 9, 1, 18, '921 Coleman Center', 3, '98925 Cody Drive', 300, '2023-3-5', '2023-3-5', '2023-11-03', NULL),
 	(1, 1, 2, 1, '709 Merry Center', 2, '06 Mallard Terrace', 500.5, '2023-10-31', '2023-10-31', '2023-11-05', '2023-11-05'),
 	(2, 2, 3, 3, '744 Summerview Court', 4, '3699 Veith Center', 600.0, '2023-11-01', '2023-11-01', '2023-11-06', '2023-11-06'),
 	(3, 2, 4, 5, '71517 Tennessee Avenue', 6, '6 Mesta Plaza', 700.2, '2023-11-02', '2023-11-02', '2023-11-07', '2023-11-07'),
@@ -308,6 +310,10 @@ VALUES
 	(20, 2, 2, 2, '8473 Hollow Ridge Circle', 21, '70468 Forest Run Road', 150, '2023-07-01', '2023-07-01', '2023-07-03', '2023-07-03'),
 	(8, 6, 3, 2, '906 Nova Parkway', 1, '7123 Morrow Hill', 300, '2023-08-10', '2023-08-10', '2023-08-12', '2023-08-12');
 
+ALTER TABLE Cliente
+ADD CONSTRAINT CHK_Cliente1 CHECK ( (Razon_Social IS NOT NULL AND CUIT IS NOT NULL AND Nombre IS NULL AND Apellido IS NULL AND DNI IS NULL) OR 
+        (Nombre IS NOT NULL AND Apellido IS NOT NULL AND DNI IS NOT NULL AND Razon_Social IS NULL AND CUIT IS NULL) );
+
 -- Creación de índices
 CREATE NONCLUSTERED INDEX idx_Fecha_Salida_Real 
 	ON Viaje_Envio(Fecha_Salida_Real ASC) INCLUDE(Fecha_Llegada_Real);
@@ -316,6 +322,9 @@ CREATE NONCLUSTERED INDEX idx_ID_Cliente ON Viaje_Envio(ID_Cliente);
 CREATE NONCLUSTERED INDEX idx_ID_Chofer ON Viaje_Envio(ID_Chofer);
 CREATE NONCLUSTERED INDEX idx_ID_Camion ON Viaje_Envio(ID_Camion);
 CREATE NONCLUSTERED INDEX idx_ID_KM_recorridos ON Viaje_envio(Cantidad_de_km_recorridos);
+
+select Fecha_Salida_Real
+from Viaje_Envio 
 
 -- Actualizar estadísticas, analisis de eficiencia de Indices
 UPDATE STATISTICS Viaje_Envio;
@@ -326,9 +335,9 @@ SELECT * FROM Viaje_Envio WHERE Fecha_Salida_Real = '2023-11-03';
 GO
 
 -- Crear el Stored Procedure " ActualizarViajeEnvio" 
-CREATE PROCEDURE ActualizarViajeEnvio
+CREATE PROCEDURE ActualizarViajeEnvio1
     @ID_ViajeEnvio INT,
-    @NuevaFechaEstimadaLlegada DATETIME
+    @NuevaFechaEstimadaLlegada DATE
 AS
 BEGIN
     -- Verificar si el viaje no ha llegado
@@ -366,10 +375,13 @@ Para ejecutar este procedimiento almacenado, puedes usar la siguiente sintaxis:
 -- Ejemplo de ejecución del Stored Procedure: 
 Las declaraciones deben tener nuevos nombres 
 */
-DECLARE @ID_Viaje INT = 123; -- Reemplaza con el ID del viaje que deseas actualizar
-DECLARE @NuevaFechaEstimada DATETIME = '2023-11-01 14:30:00'; -- Reemplaza con la nueva fecha estimada
+DECLARE @ID_Viaje INT = 39; -- Reemplaza con el ID del viaje que deseas actualizar
+DECLARE @NuevaFechaEstimada DATE = '2023-11-01'; -- Reemplaza con la nueva fecha estimada
 
-EXEC ActualizarViajeEnvio
+--SELECT *
+--FROM Viaje_envio 
+
+EXEC ActualizarViajeEnvio1
     @ID_ViajeEnvio = @ID_Viaje,
     @NuevaFechaEstimadaLlegada = @NuevaFechaEstimada;
 
