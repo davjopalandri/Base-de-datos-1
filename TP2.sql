@@ -333,3 +333,152 @@ CREATE NONCLUSTERED INDEX idx_ID_Cliente ON Viaje_Envio(ID_Cliente);
 CREATE NONCLUSTERED INDEX idx_ID_Chofer ON Viaje_Envio(ID_Chofer);
 CREATE NONCLUSTERED INDEX idx_ID_Ciudad_Origen ON Viaje_Envio(ID_Ciudad_Origen);
 CREATE NONCLUSTERED INDEX idx_ID_KM_recorridos ON Viaje_envio(Cantidad_de_km_recorridos);
+
+
+/* 4 */
+
+CREATE OR ALTER PROCEDURE ActualizarViajeEnvio
+    @ID_ViajeEnvio INT,
+    @NuevaFechaEstimadaLlegada DATE
+AS
+BEGIN
+    -- Verificar si el viaje no ha llegado
+    IF EXISTS (
+        SELECT 1
+        FROM Viaje_Envio
+        WHERE ID_Viaje_Envio = @ID_ViajeEnvio
+            AND Fecha_Llegada_Real IS NULL
+    )
+    BEGIN
+        -- Actualizar la fecha estimada de llegada
+        UPDATE Viaje_Envio
+        SET Fecha_Llegada_Estimada = @NuevaFechaEstimadaLlegada
+        WHERE ID_Viaje_Envio = @ID_ViajeEnvio;
+
+        PRINT 'Fecha estimada de llegada actualizada exitosamente.';
+    END
+    ELSE
+    BEGIN
+        -- El viaje ya ha llegado, no se puede actualizar
+        PRINT 'No se puede actualizar la fecha para un viaje que ya ha llegado.';
+    END
+END;
+
+
+EXEC ActualizarViajeEnvio
+    @ID_ViajeEnvio = 38,
+    @NuevaFechaEstimadaLlegada = '2023-11-01';
+
+
+
+
+
+
+/* 5 */
+
+CREATE OR ALTER PROCEDURE ObtenerPatenteCamionAsignado 
+@DNI_Chofer INT, 
+@MensajeResultado VARCHAR(100) OUTPUT,
+@FechaConsulta DATE,
+@PatenteCamion VARCHAR(20) OUTPUT
+AS
+BEGIN
+IF EXISTS (SELECT 1 FROM Chofer WHERE DNI = @DNI_Chofer)
+BEGIN
+	SET @MensajeResultado = 'El chofer Existe'
+	PRINT @MensajeResultado
+	
+	IF EXISTS (	SELECT 1 FROM Chofer c
+				JOIN Asignacion_Camion_Chofer asig ON c.ID_Chofer = asig.ID_Chofer
+				JOIN Camion cam ON asig.ID_Camion = cam.ID_Camion
+				WHERE @FechaConsulta BETWEEN asig.Fecha_Inicio AND ISNULL(asig.Fecha_Fin, GETDATE()))
+	BEGIN
+		SET @MensajeResultado = 'El chofer tiene un camión asignado en la fecha dada.'
+		PRINT @MensajeResultado
+		
+		SET @PatenteCamion = (SELECT TOP 1 cam.Patente
+								FROM Chofer c
+								JOIN Asignacion_Camion_Chofer asig ON c.ID_Chofer = asig.ID_Chofer
+								JOIN Camion cam ON asig.ID_Camion = cam.ID_Camion
+								WHERE @FechaConsulta BETWEEN asig.Fecha_Inicio AND ISNULL(asig.Fecha_Fin, GETDATE()))
+		PRINT 'Patente del camión asignado: ' + @PatenteCamion;
+
+		END
+		
+		ELSE
+		BEGIN
+			SET @MensajeResultado = 'El chofer no tiene un camión asignado en la fecha dada.'
+			PRINT @MensajeResultado;
+		END
+	END
+	ELSE
+	BEGIN
+		SET @MensajeResultado = 'El chofer no existe.'
+		PRINT @MensajeResultado;
+	END
+END
+
+EXEC ObtenerPatenteCamionAsignado
+  @DNI_Chofer = 340790328,
+  @FechaConsulta = '2023-04-11',
+  @MensajeResultado = 'Andaaaaa!',
+  @PatenteCamion = ''
+
+
+
+
+SELECT COUNT(*) AS Viajes_a_Provincia_StFe
+FROM Viaje_Envio v
+	JOIN Ciudad c ON v.ID_Ciudad_Destino = c.ID_Ciudad
+	JOIN Provincia p ON c.ID_Provincia = p.ID_Provincia
+WHERE P.Nombre = 'Santa Fe';
+
+
+--- Mostrar los datos que considere relevantes sobre los viajes realizados ---
+--- desde la provincia de Córdoba durante el primer semestre de 2023       ---
+SELECT
+	v.Codigo_de_viaje AS Codigo_de_viaje,
+	c.Nombre AS Cliente,
+	ch.Nombre AS Chofer,
+	ciud.Nombre AS Ciudad_de_Origen,
+	
+	v.Cantidad_de_km_recorridos AS Km_Recorridos,
+	v.Fecha_Salida_Real AS Fecha_Salida,
+	v.Fecha_Llegada_Real AS Fecha_Llegada
+FROM Viaje_Envio v
+	JOIN Cliente c ON v.ID_Cliente = c.ID_Cliente
+	JOIN Chofer ch ON v.ID_Chofer = ch.ID_Chofer
+	JOIN Ciudad ciud ON v.ID_Ciudad_Origen = ciud.ID_Ciudad
+	JOIN Provincia p ON ciud.ID_Provincia = p.ID_Provincia
+WHERE v.Fecha_Salida_Real >= '2023-01-01' AND v.Fecha_Salida_Real <= '2023-06-30'
+	AND p.Nombre = 'Córdoba';
+
+
+--- Listar los tres choferes que registraron la mayor cantidad de kilómetros ---
+--- recorridos en el año 2023, mostrando sus nombres y la cantidad de  		 ---
+--- kilómetros recorridos en orden descendente.								 ---
+SELECT TOP 3
+	CONCAT(ch.Nombre, ' ', ch.Apellido) AS Nombre_Chofer,
+	SUM(v.Cantidad_de_km_recorridos) AS Total_Kilometros_Recorridos
+FROM dbo.Chofer ch
+	JOIN Viaje_Envio v ON ch.ID_Chofer = v.ID_Chofer
+--WHERE YEAR(v.Fecha_Salida_Real) = 2023
+WHERE v.Fecha_Salida_Real >= '2023-01-01' AND v.Fecha_Salida_Real < '2024-01-01'
+GROUP BY ch.Nombre, ch.Apellido
+ORDER BY Total_Kilometros_Recorridos DESC;
+
+
+--- Obtener una lista de los clientes que solicitaron viajes/envíos en 2023, junto ---
+--- con los nombres de los choferes y la cantidad de kilómetros recorridos en      ---
+--- cada viaje. Muestra esta información en orden descendente de kilómetros 	   ---
+--- recorridos																																		 ---
+SELECT ISNULL(c.Nombre, c.Razon_Social) AS Cliente,
+	ch.Nombre AS Nombre_Chofer,
+	ve.Cantidad_de_km_recorridos AS Km_Recorridos
+FROM Cliente c
+	JOIN Viaje_Envio ve ON c.ID_Cliente = ve.ID_Cliente
+	JOIN Chofer ch ON ch.ID_chofer = ve.ID_Chofer
+--WHERE YEAR(ve.Fecha_Salida_Real) = 2023
+WHERE ve.Fecha_Salida_Real >= '2023-01-01' AND ve.Fecha_Salida_Real < '2024-01-01'
+GROUP BY ISNULL(c.Nombre, c.Razon_Social), ch.Nombre, ve.Cantidad_de_km_recorridos
+ORDER BY Km_Recorridos DESC;
