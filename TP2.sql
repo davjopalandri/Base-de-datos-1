@@ -323,3 +323,13 @@ VALUES
 	(13, 9, 2, '6872 Sheridan Parkway', 7, '05 Nancy Trail', 250, '2023-06-15', '2023-06-15', '2023-06-18', '2023-06-18'),
 	(20, 2, 2, '8473 Hollow Ridge Circle', 21, '70468 Forest Run Road', 150, '2023-07-01', '2023-07-01', '2023-07-03', '2023-07-03'),
 	(8, 6, 2, '906 Nova Parkway', 1, '7123 Morrow Hill', 300, '2023-08-10', '2023-08-10', '2023-08-12', '2023-08-12');
+
+ALTER TABLE Cliente
+ADD CONSTRAINT CHK_Cliente1 CHECK ( (Razon_Social IS NOT NULL AND CUIT IS NOT NULL AND Nombre IS NULL AND Apellido IS NULL AND DNI IS NULL) OR 
+        (Nombre IS NOT NULL AND Apellido IS NOT NULL AND DNI IS NOT NULL AND Razon_Social IS NULL AND CUIT IS NULL) );
+
+CREATE NONCLUSTERED INDEX idx_Fecha_Salida_Real ON Viaje_Envio(Fecha_Salida_Real ASC);
+CREATE NONCLUSTERED INDEX idx_ID_Cliente ON Viaje_Envio(ID_Cliente);
+CREATE NONCLUSTERED INDEX idx_ID_Chofer ON Viaje_Envio(ID_Chofer);
+CREATE NONCLUSTERED INDEX idx_ID_Ciudad_Origen ON Viaje_Envio(ID_Ciudad_Origen);
+CREATE NONCLUSTERED INDEX idx_ID_KM_recorridos ON Viaje_envio(Cantidad_de_km_recorridos);
