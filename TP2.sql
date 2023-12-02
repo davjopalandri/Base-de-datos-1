@@ -438,10 +438,10 @@ WHERE P.Nombre = 'Santa Fe';
 --- desde la provincia de Córdoba durante el primer semestre de 2023       ---
 SELECT
 	v.Codigo_de_viaje AS Codigo_de_viaje,
-	c.Nombre AS Cliente,
+	ISNULL(c.Nombre, c.Razon_Social) AS Cliente,
 	ch.Nombre AS Chofer,
 	ciud.Nombre AS Ciudad_de_Origen,
-	
+	ciud_d.Nombre AS Ciudad_de_Destino,
 	v.Cantidad_de_km_recorridos AS Km_Recorridos,
 	v.Fecha_Salida_Real AS Fecha_Salida,
 	v.Fecha_Llegada_Real AS Fecha_Llegada
@@ -449,6 +449,7 @@ FROM Viaje_Envio v
 	JOIN Cliente c ON v.ID_Cliente = c.ID_Cliente
 	JOIN Chofer ch ON v.ID_Chofer = ch.ID_Chofer
 	JOIN Ciudad ciud ON v.ID_Ciudad_Origen = ciud.ID_Ciudad
+	JOIN Ciudad ciud_d ON v.ID_Ciudad_Destino = ciud_d.ID_Ciudad
 	JOIN Provincia p ON ciud.ID_Provincia = p.ID_Provincia
 WHERE v.Fecha_Salida_Real >= '2023-01-01' AND v.Fecha_Salida_Real <= '2023-06-30'
 	AND p.Nombre = 'Córdoba';
