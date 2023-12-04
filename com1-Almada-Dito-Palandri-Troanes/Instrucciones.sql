@@ -1,6 +1,8 @@
--- CREATE DATABASE SpeedyGonzalesSRL;
+CREATE DATABASE SpeedyGonzalesSRL;
+GO
 
 USE SpeedyGonzalesSRL;
+GO
 
 CREATE TABLE Provincia
 (
@@ -46,7 +48,7 @@ CREATE TABLE Camion
 	ID_Camion int NOT NULL IDENTITY PRIMARY KEY,
 	Patente varchar(30),
 	ID_Modelo int NOT NULL,
-	Anio DATE,
+	Anio smallint,
 	ID_Remolque tinyint NOT NULL,
 	FOREIGN KEY (ID_Remolque) REFERENCES Remolque (ID_Remolque),
 	FOREIGN KEY (ID_Modelo) REFERENCES Modelo (ID_Modelo)
@@ -158,14 +160,12 @@ VALUES
 INSERT INTO Camion
 	(Patente, ID_Modelo, Anio, ID_Remolque)
 VALUES
-	('ABC123AF', 1, '2020-01-01', 1),
-	('DEF456GH', 2, '2019-02-15', 2),
-	('GHI789OY', 3, '2018-05-10', 3),
-	('FGS456ER', 4, '2018-05-10', 5),
-	('LAJ248KO', 5, '2018-05-10', 3),
-	('KWI671PO', 6, '2018-05-10', 4);
-
-
+	('ABC123AF', 1, 2020, 1),
+	('DEF456GH', 2, 2019, 2),
+	('GHI789OY', 3, 2018, 3),
+	('FGS456ER', 4, 2018, 5),
+	('LAJ248KO', 5, 2018, 3),
+	('KWI671PO', 6, 2018, 4);
 
 
 INSERT INTO Provincia
@@ -257,6 +257,7 @@ VALUES
     (4, 3, '2023-03-20', '2023-04-05'),
     (1, 4, '2023-02-10', NULL);
 
+
 INSERT INTO Cliente
 	(Nombre, Apellido, Razon_Social, DNI, CUIT, Domicilio, Telefono, Email, ID_Ciudad)
 VALUES
@@ -324,19 +325,22 @@ VALUES
 	(20, 2, 2, '8473 Hollow Ridge Circle', 21, '70468 Forest Run Road', 150, '2023-07-01', '2023-07-01', '2023-07-03', '2023-07-03'),
 	(8, 6, 2, '906 Nova Parkway', 1, '7123 Morrow Hill', 300, '2023-08-10', '2023-08-10', '2023-08-12', '2023-08-12');
 
+
+/* TP2 - Ejercicio 2 */
 ALTER TABLE Cliente
 ADD CONSTRAINT CHK_Cliente1 CHECK ( (Razon_Social IS NOT NULL AND CUIT IS NOT NULL AND Nombre IS NULL AND Apellido IS NULL AND DNI IS NULL) OR 
-        (Nombre IS NOT NULL AND Apellido IS NOT NULL AND DNI IS NOT NULL AND Razon_Social IS NULL AND CUIT IS NULL) );
+									(Nombre IS NOT NULL AND Apellido IS NOT NULL AND DNI IS NOT NULL AND Razon_Social IS NULL AND CUIT IS NULL) );
 
+
+/* TP2 - Ejercicio 3 */
 CREATE NONCLUSTERED INDEX idx_Fecha_Salida_Real ON Viaje_Envio(Fecha_Salida_Real ASC);
 CREATE NONCLUSTERED INDEX idx_ID_Cliente ON Viaje_Envio(ID_Cliente);
 CREATE NONCLUSTERED INDEX idx_ID_Chofer ON Viaje_Envio(ID_Chofer);
 CREATE NONCLUSTERED INDEX idx_ID_Ciudad_Origen ON Viaje_Envio(ID_Ciudad_Origen);
 CREATE NONCLUSTERED INDEX idx_ID_KM_recorridos ON Viaje_envio(Cantidad_de_km_recorridos);
+GO
 
-
-/* 4 */
-
+/* TP2 - Ejercicio 4 */
 CREATE OR ALTER PROCEDURE ActualizarViajeEnvio
     @ID_ViajeEnvio INT,
     @NuevaFechaEstimadaLlegada DATE
@@ -363,24 +367,20 @@ BEGIN
         PRINT 'No se puede actualizar la fecha para un viaje que ya ha llegado.';
     END
 END;
-
+GO
 
 EXEC ActualizarViajeEnvio
     @ID_ViajeEnvio = 38,
     @NuevaFechaEstimadaLlegada = '2023-11-01';
+GO
 
 
-
-
-
-
-/* 5 */
-
+/* TP2 - Ejercicio 5 */
 CREATE OR ALTER PROCEDURE ObtenerPatenteCamionAsignado 
-@DNI_Chofer INT, 
-@MensajeResultado VARCHAR(100) OUTPUT,
-@FechaConsulta DATE,
-@PatenteCamion VARCHAR(20) OUTPUT
+	@DNI_Chofer varchar(30), 
+	@MensajeResultado VARCHAR(100) OUTPUT,
+	@FechaConsulta DATE,
+	@PatenteCamion VARCHAR(20) OUTPUT
 AS
 BEGIN
 IF EXISTS (SELECT 1 FROM Chofer WHERE DNI = @DNI_Chofer)
@@ -417,13 +417,14 @@ BEGIN
 		PRINT @MensajeResultado;
 	END
 END
+GO
 
 EXEC ObtenerPatenteCamionAsignado
-  @DNI_Chofer = 340790328,
-  @FechaConsulta = '2023-04-11',
-  @MensajeResultado = 'Andaaaaa!',
+  @DNI_Chofer = 38902087,
+  @FechaConsulta = '1822-10-2',
+  @MensajeResultado = '',
   @PatenteCamion = ''
-
+GO
 
 
 
@@ -438,8 +439,8 @@ WHERE P.Nombre = 'Santa Fe';
 --- desde la provincia de Córdoba durante el primer semestre de 2023       ---
 SELECT
 	v.Codigo_de_viaje AS Codigo_de_viaje,
-	ISNULL(c.Nombre, c.Razon_Social) AS Cliente,
-	ch.Nombre AS Chofer,
+	ISNULL((c.Nombre + ' ' + c.Apellido), c.Razon_Social) AS Cliente,
+	(ch.Nombre + ' ' + ch.Apellido) AS Chofer,
 	ciud.Nombre AS Ciudad_de_Origen,
 	ciud_d.Nombre AS Ciudad_de_Destino,
 	v.Cantidad_de_km_recorridos AS Km_Recorridos,
@@ -461,7 +462,7 @@ WHERE v.Fecha_Salida_Real >= '2023-01-01' AND v.Fecha_Salida_Real <= '2023-06-30
 SELECT TOP 3
 	CONCAT(ch.Nombre, ' ', ch.Apellido) AS Nombre_Chofer,
 	SUM(v.Cantidad_de_km_recorridos) AS Total_Kilometros_Recorridos
-FROM dbo.Chofer ch
+FROM Chofer ch
 	JOIN Viaje_Envio v ON ch.ID_Chofer = v.ID_Chofer
 --WHERE YEAR(v.Fecha_Salida_Real) = 2023
 WHERE v.Fecha_Salida_Real >= '2023-01-01' AND v.Fecha_Salida_Real < '2024-01-01'
@@ -472,14 +473,14 @@ ORDER BY Total_Kilometros_Recorridos DESC;
 --- Obtener una lista de los clientes que solicitaron viajes/envíos en 2023, junto ---
 --- con los nombres de los choferes y la cantidad de kilómetros recorridos en      ---
 --- cada viaje. Muestra esta información en orden descendente de kilómetros 	   ---
---- recorridos																																		 ---
-SELECT ISNULL(c.Nombre, c.Razon_Social) AS Cliente,
-	ch.Nombre AS Nombre_Chofer,
+--- recorridos																	   ---
+SELECT ISNULL((c.Nombre + ' ' + c.Apellido), c.Razon_Social) AS Cliente,
+	(ch.Nombre + ' ' + ch.Apellido) AS Nombre_Chofer,
 	ve.Cantidad_de_km_recorridos AS Km_Recorridos
 FROM Cliente c
 	JOIN Viaje_Envio ve ON c.ID_Cliente = ve.ID_Cliente
 	JOIN Chofer ch ON ch.ID_chofer = ve.ID_Chofer
 --WHERE YEAR(ve.Fecha_Salida_Real) = 2023
 WHERE ve.Fecha_Salida_Real >= '2023-01-01' AND ve.Fecha_Salida_Real < '2024-01-01'
-GROUP BY ISNULL(c.Nombre, c.Razon_Social), ch.Nombre, ve.Cantidad_de_km_recorridos
+GROUP BY ISNULL((c.Nombre + ' ' + c.Apellido), c.Razon_Social), ch.Nombre, ch.Apellido, ve.Cantidad_de_km_recorridos
 ORDER BY Km_Recorridos DESC;
