@@ -46,7 +46,7 @@ CREATE TABLE Camion
 	ID_Camion int NOT NULL IDENTITY PRIMARY KEY,
 	Patente varchar(30),
 	ID_Modelo int NOT NULL,
-	Anio DATE,
+	Anio smallint,
 	ID_Remolque tinyint NOT NULL,
 	FOREIGN KEY (ID_Remolque) REFERENCES Remolque (ID_Remolque),
 	FOREIGN KEY (ID_Modelo) REFERENCES Modelo (ID_Modelo)
